@@ -1,5 +1,11 @@
 package com.darshan09200.products.ui;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -7,14 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
-
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.darshan09200.products.R;
 import com.darshan09200.products.databinding.ActivityMapsBinding;
@@ -37,7 +35,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.CancellationToken;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.google.android.gms.tasks.Task;
 
@@ -46,14 +43,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final float ZOOM = 15;
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    FusedLocationProviderClient mClient;
+    LatLng userLocation;
+    Marker marker;
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
-
-    FusedLocationProviderClient mClient;
-
-    LatLng userLocation;
-
-    Marker marker;
+    private boolean isCheckingGps = false;
+    ActivityResultLauncher<IntentSenderRequest> gpsActivityResult = registerForActivityResult(
+            new ActivityResultContracts.StartIntentSenderForResult(),
+            result -> {
+                if (result.getResultCode() == MapsActivity.RESULT_OK) {
+                    userLocation = null;
+                    onPermissionGranted();
+                }
+                isCheckingGps = false;
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         binding.saveLocation.setOnClickListener(v -> {
-            if(marker != null) {
+            if (marker != null) {
                 Product product = CurrentProductHelper.instance.getProduct();
                 if (product == null) {
                     product = new Product();
@@ -211,17 +215,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
-
-    private boolean isCheckingGps = false;
-    ActivityResultLauncher<IntentSenderRequest> gpsActivityResult = registerForActivityResult(
-            new ActivityResultContracts.StartIntentSenderForResult(),
-            result -> {
-                if (result.getResultCode() == MapsActivity.RESULT_OK) {
-                    userLocation = null;
-                    onPermissionGranted();
-                }
-                isCheckingGps = false;
-            });
 
     private void enableGPS() {
         if (!isCheckingGps) {

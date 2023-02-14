@@ -11,10 +11,9 @@ import com.darshan09200.products.data.DatabaseClient;
 import java.util.List;
 
 public class ProductViewModel extends AndroidViewModel {
+    private static Product lastDeleted;
     private final DatabaseClient databaseClient;
     private final LiveData<List<Product>> allProducts;
-
-    private static Product lastDeleted;
 
     public ProductViewModel(@NonNull Application application) {
         super(application);

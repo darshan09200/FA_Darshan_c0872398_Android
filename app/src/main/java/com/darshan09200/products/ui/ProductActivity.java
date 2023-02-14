@@ -1,23 +1,21 @@
 package com.darshan09200.products.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.Glide;
 import com.darshan09200.products.R;
 import com.darshan09200.products.databinding.ActivityProductBinding;
-import com.darshan09200.products.helper.CurrentProductHelper;
 import com.darshan09200.products.helper.Helper;
 import com.darshan09200.products.model.Product;
 import com.darshan09200.products.model.ProductViewModel;
-import com.google.android.gms.maps.model.LatLng;
 
 public class ProductActivity extends AppCompatActivity {
 
@@ -94,7 +92,7 @@ public class ProductActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            finishAfterTransition();
             return true;
         }
         return super.onOptionsItemSelected(item);

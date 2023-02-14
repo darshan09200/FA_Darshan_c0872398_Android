@@ -10,7 +10,7 @@ public class CurrentProductHelper {
     @Nullable
     private Product product;
 
-    private CurrentProductHelper(){
+    private CurrentProductHelper() {
 
     }
 

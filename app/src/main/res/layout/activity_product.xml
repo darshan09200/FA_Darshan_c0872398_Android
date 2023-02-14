@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Product Title"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:transitionName="productTitle" />
 
     <TextView
         android:id="@+id/product_price"
@@ -23,7 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:text="Product Price"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:transitionName="productPrice" />
 
     <TextView
         android:id="@+id/product_description"

@@ -1,13 +1,11 @@
 package com.darshan09200.products.data;
 
 import android.content.Context;
-import android.location.Location;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import com.darshan09200.products.model.Product;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment implements MenuProvider {
 
     @Override
     public void onPrepareMenu(@NonNull Menu menu) {
-        if(isVisible()) {
+        if (isVisible()) {
             menu.clear();
             System.out.println("called clear");
         }

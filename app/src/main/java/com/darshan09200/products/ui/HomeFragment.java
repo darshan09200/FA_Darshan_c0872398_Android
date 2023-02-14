@@ -1,17 +1,17 @@
 package com.darshan09200.products.ui;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.darshan09200.products.R;
 import com.darshan09200.products.adapter.ProductsAdapter;
 import com.darshan09200.products.databinding.FragmentHomeBinding;
+import com.darshan09200.products.databinding.ProductItemBinding;
 import com.darshan09200.products.model.Product;
 import com.darshan09200.products.model.ProductViewModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,8 +33,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClickListener, MenuProvider {
 
-    private FragmentHomeBinding binding;
     private final List<Product> products = new ArrayList<>();
+    private FragmentHomeBinding binding;
     private ProductViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,20 +89,17 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
         });
 
         if (viewModel.recentlyDeleted()) {
-            Snackbar.make(binding.getRoot(), "Product deleted", Snackbar.LENGTH_LONG)
-                    .setAction("UNDO", v -> {
-                        if (viewModel.undoDelete()) {
-                            Snackbar.make(binding.getRoot(), "Product restored", Snackbar.LENGTH_LONG).show();
-                        }
-                    })
-                    .addCallback(new Snackbar.Callback() {
-                        @Override
-                        public void onDismissed(Snackbar transientBottomBar, int event) {
-                            super.onDismissed(transientBottomBar, event);
-                            viewModel.discardDeleted();
-                        }
-                    })
-                    .show();
+            Snackbar.make(binding.getRoot(), "Product deleted", Snackbar.LENGTH_LONG).setAction("UNDO", v -> {
+                if (viewModel.undoDelete()) {
+                    Snackbar.make(binding.getRoot(), "Product restored", Snackbar.LENGTH_LONG).show();
+                }
+            }).addCallback(new Snackbar.Callback() {
+                @Override
+                public void onDismissed(Snackbar transientBottomBar, int event) {
+                    super.onDismissed(transientBottomBar, event);
+                    viewModel.discardDeleted();
+                }
+            }).show();
         }
     }
 
@@ -112,11 +110,14 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(int position, ProductItemBinding binding) {
         Product product = products.get(position);
         Intent intent = new Intent(getActivity(), ProductActivity.class);
         intent.putExtra("productId", product.getId());
-        startActivity(intent);
+        Pair<View, String> p1 = Pair.create(binding.productTitle, "productTitle");
+        Pair<View, String> p2 = Pair.create(binding.productPrice, "productPrice");
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     @Override

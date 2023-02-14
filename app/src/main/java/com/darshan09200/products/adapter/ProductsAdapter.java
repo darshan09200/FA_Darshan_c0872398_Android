@@ -43,7 +43,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position, ProductItemBinding binding);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,11 +54,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
             this.binding = binding;
             binding.getRoot().setOnClickListener(v -> {
-                onItemClickListener.onItemClick(getAdapterPosition());
+                onItemClickListener.onItemClick(getAdapterPosition(), binding);
             });
 
             binding.productView.setOnClickListener(v -> {
-                onItemClickListener.onItemClick(getAdapterPosition());
+                onItemClickListener.onItemClick(getAdapterPosition(), binding);
             });
         }
 
