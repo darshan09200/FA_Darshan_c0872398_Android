@@ -23,6 +23,6 @@ public interface ProductDao {
     LiveData<List<Product>> getAllProducts();
 
     @Query("SELECT * FROM product WHERE id == :id")
-    Product getProduct(String id);
+    Product getProduct(long id);
 
 }

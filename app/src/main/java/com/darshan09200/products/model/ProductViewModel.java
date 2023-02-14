@@ -25,7 +25,7 @@ public class ProductViewModel extends AndroidViewModel {
         return allProducts;
     }
 
-    public Product getProduct(String id) {
+    public Product getProduct(long id) {
         return databaseClient.getProduct(id);
     }
 

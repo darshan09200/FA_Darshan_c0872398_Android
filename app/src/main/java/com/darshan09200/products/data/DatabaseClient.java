@@ -45,7 +45,7 @@ public class DatabaseClient {
         return allProducts;
     }
 
-    public Product getProduct(String id) {
+    public Product getProduct(long id) {
         Future<Product> future = AppDatabase.databaseWriteExecutor.submit(() -> {
             return productDao.getProduct(id);
         });

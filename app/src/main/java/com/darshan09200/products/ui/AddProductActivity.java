@@ -36,7 +36,7 @@ public class AddProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        viewModel = new ProductViewModel(getApplication());
+        viewModel = new ViewModelProvider(this).get(ProductViewModel.class);
 
         binding.addLocation.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductActivity.this, MapsActivity.class);
