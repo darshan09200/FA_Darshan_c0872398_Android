@@ -65,10 +65,9 @@ public class AddProductActivity extends AppCompatActivity {
                 message = "Description Empty";
             } else if (priceString.isEmpty()) {
                 message = "Price Empty";
+            } else if (product.getCoordinate() == null) {
+                message = "Select a location for product";
             }
-//            else if (product.getCoordinate() == null) {
-//                message = "Select a location for product";
-//            }
             else {
                 try {
                     price = Double.parseDouble(priceString);
@@ -86,7 +85,7 @@ public class AddProductActivity extends AppCompatActivity {
                 product.setDescription(description);
                 product.setPrice(price);
                 product.setUpdatedAt(new Date());
-                product.setCoordinate(new LatLng(43.7739109, -79.3444486));
+//                product.setCoordinate(new LatLng(43.7739109, -79.3444486));
 
                 viewModel.insert(product);
                 CurrentProductHelper.instance.setProduct(null);
