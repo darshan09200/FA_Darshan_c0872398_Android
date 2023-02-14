@@ -17,7 +17,7 @@ public class DatabaseClient {
     private final Context context;
     private final ProductDao productDao;
 
-    private final LiveData<List<Product>> allProducts;
+    private LiveData<List<Product>> allProducts;
 
     private DatabaseClient(Context context) {
         this.context = context;
@@ -25,7 +25,12 @@ public class DatabaseClient {
         appDatabase = Room.databaseBuilder(this.context, AppDatabase.class, "Products").build();
 
         productDao = appDatabase.productDao();
-        allProducts = productDao.getAllProducts();
+        Future<LiveData<List<Product>>> future = AppDatabase.databaseWriteExecutor.submit(() -> productDao.getAllProducts());
+        try {
+            allProducts = future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static synchronized DatabaseClient getInstance(Context context) {
@@ -43,10 +48,19 @@ public class DatabaseClient {
         return allProducts;
     }
 
+    public LiveData<List<Product>> filterProducts(String query) {
+        Future<LiveData<List<Product>>> future = AppDatabase.databaseWriteExecutor.submit(() -> productDao.filterProducts(query));
+        LiveData<List<Product>> result = null;
+        try {
+            result = future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public Product getProduct(long id) {
-        Future<Product> future = AppDatabase.databaseWriteExecutor.submit(() -> {
-            return productDao.getProduct(id);
-        });
+        Future<Product> future = AppDatabase.databaseWriteExecutor.submit(() -> productDao.getProduct(id));
         Product result = null;
         try {
             result = future.get();

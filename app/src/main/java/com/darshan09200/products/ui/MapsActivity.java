@@ -31,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -132,7 +133,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void addMarker(LatLng latLng, String title, String snippet) {
-        MarkerOptions options = new MarkerOptions().position(latLng).title(title).draggable(true);
+        MarkerOptions options = new MarkerOptions()
+                .position(latLng)
+                .title(title)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                .draggable(true);
         if (snippet != null) {
             options = options.snippet(snippet);
         }

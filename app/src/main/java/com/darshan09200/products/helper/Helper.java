@@ -7,7 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class Helper {
     public static String getStaticMapUrl(LatLng latLng, String apiKey) {
-        return "https://maps.googleapis.com/maps/api/staticmap?center=" + latLng.latitude + "," + latLng.longitude + "&zoom=15&size=600x400&markers=label:Product%7C" + latLng.latitude + "," + latLng.longitude + "&key=" + apiKey;
+        // https://shorturl.at/lmA69 -> https://firebasestorage.googleapis.com/v0/b/persistence-darshan09200.appspot.com/o/marker.png?alt=media
+        return "https://maps.googleapis.com/maps/api/staticmap?center=" + latLng.latitude + "," + latLng.longitude + "&zoom=15&size=600x400&markers=icon:https://shorturl.at/lmA69%7C" + latLng.latitude + "," + latLng.longitude + "&key=" + apiKey;
     }
 
     public static Spanned formatPrice(double price) {

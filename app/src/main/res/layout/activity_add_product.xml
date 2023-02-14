@@ -56,9 +56,9 @@
             android:id="@+id/map_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:scaleType="center"
             android:layout_marginVertical="8dp"
-            android:visibility="gone"/>
+            android:scaleType="center"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/add_location"

@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.MenuHost;
@@ -36,6 +37,8 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
     private final List<Product> products = new ArrayList<>();
     private FragmentHomeBinding binding;
     private ProductViewModel viewModel;
+    private MenuItem searchViewItem;
+    private SearchView searchView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -125,7 +128,25 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
         if (isVisible()) {
             menu.clear();
             menuInflater.inflate(R.menu.home_menu, menu);
-            System.out.println("called add");
+
+            searchViewItem = menu.findItem(R.id.search_bar);
+            searchView = (SearchView) searchViewItem.getActionView();
+            searchView.setQueryHint("Search Products");
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    searchView.clearFocus();
+                    viewModel.filterProducts(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    viewModel.filterProducts(newText);
+                    return true;
+                }
+            });
         }
     }
 

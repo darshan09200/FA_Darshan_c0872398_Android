@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.darshan09200.products.data.DatabaseClient;
 
@@ -14,16 +16,27 @@ public class ProductViewModel extends AndroidViewModel {
     private static Product lastDeleted;
     private final DatabaseClient databaseClient;
     private final LiveData<List<Product>> allProducts;
+    private MutableLiveData<String> searchQuery = new MutableLiveData<>("");
 
     public ProductViewModel(@NonNull Application application) {
         super(application);
 
         databaseClient = DatabaseClient.getInstance(application);
-        allProducts = databaseClient.getAllProducts();
+        allProducts = Transformations.switchMap(searchQuery, input -> {
+            if (input == null || input.equals("")) {
+                return databaseClient.getAllProducts();
+            } else {
+                return databaseClient.filterProducts(input);
+            }
+        });
     }
 
     public LiveData<List<Product>> getAllProducts() {
         return allProducts;
+    }
+
+    public void filterProducts(String query) {
+        searchQuery.setValue(query.trim());
     }
 
     public Product getProduct(long id) {

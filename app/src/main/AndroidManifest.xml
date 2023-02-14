@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!--
     Allows Glide to monitor connectivity status and restart failed requests if users go from a
     a disconnected to a connected network state.
     -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -31,7 +31,7 @@
         <activity
             android:name=".ui.AddProductActivity"
             android:exported="false"
-            android:label="@string/title_activity_add_product"/>
+            android:label="@string/title_activity_add_product" />
         <activity
             android:name=".ui.ProductActivity"
             android:exported="false" />
