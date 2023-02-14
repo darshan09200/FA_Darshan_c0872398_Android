@@ -4,4 +4,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
     <string name="no_records_found">No Records Found</string>
+    <string name="title_activity_maps">Select Location</string>
+    <string name="title_activity_add_product">Add Product</string>
 </resources>

@@ -32,7 +32,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
         Product product = products.get(position);
 
-        viewHolder.binding.productTitle.setText((product.getName()));
+        viewHolder.binding.productTitle.setText(product.getName());
+        viewHolder.binding.productPrice.setText("$ " + product.getPrice());
     }
 
     @Override

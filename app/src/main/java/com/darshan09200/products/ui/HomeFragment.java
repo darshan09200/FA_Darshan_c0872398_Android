@@ -35,8 +35,6 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
     private ProductViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(ProductViewModel.class);
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         binding.productList.setAdapter(new ProductsAdapter(products, this));
@@ -67,20 +65,26 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
             }
         });
 
-        viewModel.getAllProducts().observe(getActivity(), favourites -> {
-            this.products.clear();
-            this.products.addAll(favourites);
-            if (binding != null) {
-                binding.productList.getAdapter().notifyDataSetChanged();
-            }
-        });
-
         MenuHost menuHost = requireActivity();
         menuHost.addMenuProvider(this);
 
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        viewModel = null;
+        viewModel = new ProductViewModel(getActivity().getApplication());
+        viewModel.getAllProducts().observe(getActivity(), products -> {
+            this.products.clear();
+            this.products.addAll(products);
+            if (binding != null) {
+                binding.productList.getAdapter().notifyDataSetChanged();
+            }
+        });
+    }
 
     @Override
     public void onDestroyView() {
@@ -98,7 +102,7 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
 
     @Override
     public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-        if(isVisible()) {
+        if (isVisible()) {
             menu.clear();
             menuInflater.inflate(R.menu.home_menu, menu);
             System.out.println("called add");
@@ -107,14 +111,17 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
 
     @Override
     public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-        if(menuItem.getItemId() == R.id.add_product){
+        if (menuItem.getItemId() == R.id.add_product) {
             Product product = new Product();
             product.setName("Test 1");
             product.setDescription("Test 2");
             product.setPrice(100.0);
             product.setUpdatedAt(new Date());
-            product.setCoordinate(new LatLng(43.7739109,-79.3444486));
-            viewModel.insert(product);
+            product.setCoordinate(new LatLng(43.7739109, -79.3444486));
+//            viewModel.insert(product);
+
+            Intent intent = new Intent(getActivity(), AddProductActivity.class);
+            startActivity(intent);
             return true;
         }
         return false;
