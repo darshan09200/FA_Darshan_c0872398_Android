@@ -1,9 +1,8 @@
 package com.darshan09200.products.ui;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
@@ -44,6 +45,9 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
 
+        Fade fade = new Fade();
+        View decor = getActivity().getWindow().getDecorView();
+//        fade.excludeTarget(decor.findViewById(R.id.actio))
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         binding.productList.setAdapter(new ProductsAdapter(products, this));
@@ -119,7 +123,7 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
         intent.putExtra("productId", product.getId());
         Pair<View, String> p1 = Pair.create(binding.productTitle, "productTitle");
         Pair<View, String> p2 = Pair.create(binding.productPrice, "productPrice");
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), p1, p2);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), p1, p2);
         startActivity(intent, options.toBundle());
     }
 

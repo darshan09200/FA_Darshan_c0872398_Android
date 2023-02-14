@@ -15,5 +15,13 @@
 
         <item name="android:windowActivityTransitions">true</item>
 
+        <!-- Set the transitions which are used for the entrance and exit of shared elements -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/product_transition
+        </item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/product_transition
+        </item>
+
     </style>
 </resources>
