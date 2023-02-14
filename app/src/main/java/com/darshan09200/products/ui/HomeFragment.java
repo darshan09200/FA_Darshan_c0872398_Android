@@ -35,6 +35,9 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
     private ProductViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
+
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         binding.productList.setAdapter(new ProductsAdapter(products, this));
@@ -74,9 +77,6 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
-
-        viewModel = null;
-        viewModel = new ProductViewModel(getActivity().getApplication());
         viewModel.getAllProducts().observe(getActivity(), products -> {
             this.products.clear();
             this.products.addAll(products);

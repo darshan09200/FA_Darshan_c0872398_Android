@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.darshan09200.products.R;
 import com.darshan09200.products.databinding.ActivityAddProductBinding;
 import com.darshan09200.products.helper.CurrentProductHelper;
+import com.darshan09200.products.helper.Helper;
 import com.darshan09200.products.model.Product;
 import com.darshan09200.products.model.ProductViewModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -36,7 +37,7 @@ public class AddProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        viewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ProductViewModel.class);
 
         binding.addLocation.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductActivity.this, MapsActivity.class);
@@ -62,9 +63,11 @@ public class AddProductActivity extends AppCompatActivity {
                 message = "Description Empty";
             } else if (priceString.isEmpty()) {
                 message = "Price Empty";
-            } else if (product.getCoordinate() == null) {
-                message = "Select a location for product";
-            } else {
+            }
+//            else if (product.getCoordinate() == null) {
+//                message = "Select a location for product";
+//            }
+            else {
                 try {
                     price = Double.parseDouble(priceString);
                     if (price <= 0) {
@@ -75,13 +78,14 @@ public class AddProductActivity extends AppCompatActivity {
                     message = "Invalid price";
                 }
             }
-            if(message.length() > 0 ){
+            if (message.length() > 0) {
                 Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
             } else {
                 product.setName(name);
                 product.setDescription(description);
                 product.setPrice(price);
                 product.setUpdatedAt(new Date());
+                product.setCoordinate(new LatLng(43.7739109, -79.3444486));
 
                 viewModel.insert(product);
                 CurrentProductHelper.instance.setProduct(null);
@@ -99,7 +103,7 @@ public class AddProductActivity extends AppCompatActivity {
         if (CurrentProductHelper.instance.getProduct() != null) {
             binding.addLocation.setText("Update Location");
             binding.mapImage.setVisibility(View.VISIBLE);
-            String mapImageUrl = getStaticMapUrl();
+            String mapImageUrl = Helper.getStaticMapUrl(CurrentProductHelper.instance.getProduct().getCoordinate(), getResources().getString(R.string.api_key));
             Glide.with(this).load(mapImageUrl).into(binding.mapImage);
         } else {
             binding.addLocation.setText("Add Location");
@@ -107,10 +111,6 @@ public class AddProductActivity extends AppCompatActivity {
         }
     }
 
-    private String getStaticMapUrl() {
-        LatLng latLng = CurrentProductHelper.instance.getProduct().getCoordinate();
-        return "https://maps.googleapis.com/maps/api/staticmap?center=" + latLng.latitude + "," + latLng.longitude + "&zoom=15&size=600x400&markers=label:Product%7C" + latLng.latitude + "," + latLng.longitude + "&key=" + getResources().getString(R.string.api_key);
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

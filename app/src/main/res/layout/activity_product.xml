@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.ProductActivity"
-    android:padding="24dp">
+    android:paddingHorizontal="24dp"
+    android:paddingBottom="24dp"
+    tools:context=".ui.ProductActivity">
 
     <TextView
         android:id="@+id/product_title"
@@ -37,6 +38,25 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginVertical="8dp"
-        android:scaleType="center"/>
+        android:scaleType="center" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:backgroundTint="@color/teal_200"
+        android:drawableEnd="@drawable/edit"
+        android:drawableTint="@color/black"
+        android:text="Edit"
+        android:textColor="@color/black" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:backgroundTint="@color/design_default_color_error"
+        android:drawableEnd="@drawable/delete"
+        android:drawableTint="@color/white"
+        android:text="Delete" />
 
 </LinearLayout>

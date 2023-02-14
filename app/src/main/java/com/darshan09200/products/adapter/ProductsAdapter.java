@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.darshan09200.products.databinding.ProductItemBinding;
+import com.darshan09200.products.helper.Helper;
 import com.darshan09200.products.model.Product;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         Product product = products.get(position);
 
         viewHolder.binding.productTitle.setText(product.getName());
-        viewHolder.binding.productPrice.setText("$ " + product.getPrice());
+        viewHolder.binding.productPrice.setText(Helper.formatPrice(product.getPrice()));
     }
 
     @Override

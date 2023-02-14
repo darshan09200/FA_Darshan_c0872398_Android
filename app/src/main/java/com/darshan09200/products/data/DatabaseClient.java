@@ -21,7 +21,7 @@ public class DatabaseClient {
 
     private final LiveData<List<Product>> allProducts;
 
-    public DatabaseClient(Context context) {
+    private DatabaseClient(Context context) {
         this.context = context;
 
         appDatabase = Room.databaseBuilder(this.context, AppDatabase.class, "Maps").build();

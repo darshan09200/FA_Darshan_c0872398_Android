@@ -17,7 +17,7 @@ public class ProductViewModel extends AndroidViewModel {
     public ProductViewModel(@NonNull Application application) {
         super(application);
 
-        databaseClient = new DatabaseClient(application);
+        databaseClient = DatabaseClient.getInstance(application);
         allProducts = databaseClient.getAllProducts();
     }
 
