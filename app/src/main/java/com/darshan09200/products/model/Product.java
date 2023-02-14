@@ -15,6 +15,8 @@ public class Product {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+    private String userId;
+
     private String name;
     private String description;
 
@@ -27,6 +29,7 @@ public class Product {
     private Date updatedAt;
 
     public LatLng getCoordinate() {
+        if(latitude == null || longitude == null) return null;
         return new LatLng(latitude, longitude);
     }
 
@@ -89,5 +92,13 @@ public class Product {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

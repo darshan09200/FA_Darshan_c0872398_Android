@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.darshan09200.products.data.DatabaseClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -45,6 +47,10 @@ public class ProductViewModel extends AndroidViewModel {
 
 
     public void insert(Product product) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            product.setUserId(user.getUid());
+        }
         databaseClient.insert(product);
     }
 

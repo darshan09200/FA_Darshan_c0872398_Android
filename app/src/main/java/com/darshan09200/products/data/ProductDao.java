@@ -22,9 +22,18 @@ public interface ProductDao {
     @Query("SELECT * FROM product ORDER BY updatedAt DESC")
     LiveData<List<Product>> getAllProducts();
 
+    @Query("SELECT * FROM product WHERE userId = :userId ORDER BY updatedAt DESC")
+    LiveData<List<Product>> getAllProducts(String userId);
+
     @Query("SELECT * FROM product WHERE name LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' ORDER BY updatedAt DESC")
     LiveData<List<Product>> filterProducts(String query);
 
+    @Query("SELECT * FROM product WHERE userId = :userId AND name LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' ORDER BY updatedAt DESC")
+    LiveData<List<Product>> filterProducts(String query, String userId);
+
     @Query("SELECT * FROM product WHERE id == :id")
     Product getProduct(long id);
+
+    @Query("SELECT * FROM product WHERE id == :id AND userId == :userId")
+    Product getProduct(long id, String userId);
 }

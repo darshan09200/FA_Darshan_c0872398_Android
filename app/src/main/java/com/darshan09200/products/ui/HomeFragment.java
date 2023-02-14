@@ -2,7 +2,6 @@ package com.darshan09200.products.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,12 +44,12 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
 
-        Fade fade = new Fade();
-        View decor = getActivity().getWindow().getDecorView();
-//        fade.excludeTarget(decor.findViewById(R.id.actio))
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         binding.productList.setAdapter(new ProductsAdapter(products, this));
+
+        checkEmpty();
+
         binding.productList.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
 
             @Override
@@ -71,17 +70,20 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
                 checkEmpty();
             }
 
-            void checkEmpty() {
-                boolean emptyViewVisible = binding.productList.getAdapter().getItemCount() == 0;
-                binding.emptyView.setVisibility(emptyViewVisible ? View.VISIBLE : View.GONE);
-                binding.productList.setVisibility(emptyViewVisible ? View.GONE : View.VISIBLE);
-            }
+
         });
 
         MenuHost menuHost = requireActivity();
         menuHost.addMenuProvider(this);
 
         return binding.getRoot();
+    }
+
+    private void checkEmpty() {
+        boolean emptyViewVisible = binding.productList.getAdapter().getItemCount() == 0;
+        System.out.println(binding.productList.getAdapter().getItemCount());
+        binding.emptyView.setVisibility(emptyViewVisible ? View.VISIBLE : View.GONE);
+        binding.productList.setVisibility(emptyViewVisible ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -157,14 +159,6 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
     @Override
     public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.add_product) {
-            Product product = new Product();
-            product.setName("Test 1");
-            product.setDescription("Test 2");
-            product.setPrice(100.0);
-            product.setUpdatedAt(new Date());
-            product.setCoordinate(new LatLng(43.7739109, -79.3444486));
-//            viewModel.insert(product);
-
             Intent intent = new Intent(getActivity(), AddProductActivity.class);
             startActivity(intent);
             return true;
