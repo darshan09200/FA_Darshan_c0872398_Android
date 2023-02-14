@@ -39,9 +39,11 @@ public class AddProductActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ProductViewModel.class);
 
+        prepareUI();
+
         binding.addLocation.setOnClickListener(v -> {
-            Intent intent = new Intent(AddProductActivity.this, MapsActivity.class);
-            startActivity(intent);
+            Intent mapIntent = new Intent(AddProductActivity.this, MapsActivity.class);
+            startActivity(mapIntent);
         });
 
         binding.addProduct.setOnClickListener(v -> {
@@ -71,10 +73,9 @@ public class AddProductActivity extends AppCompatActivity {
                 try {
                     price = Double.parseDouble(priceString);
                     if (price <= 0) {
-                        message = "Price should be greate than 0";
+                        message = "Price should be greater than 0";
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getLocalizedMessage());
                     message = "Invalid price";
                 }
             }
@@ -94,6 +95,28 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void prepareUI() {
+        Intent intent = getIntent();
+        long productId = intent.getLongExtra("productId", 0);
+
+        if (productId > 0) {
+            ProductViewModel viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ProductViewModel.class);
+
+            Product product = viewModel.getProduct(productId);
+
+            if (product != null) {
+                CurrentProductHelper.instance.setProduct(product);
+                getSupportActionBar().setTitle("Update Product");
+                binding.productTitle.getEditText().setText(product.getName());
+                binding.productDescription.getEditText().setText(product.getDescription());
+                binding.productPrice.getEditText().setText(product.getPrice().toString());
+                binding.addProduct.setText(("Update Product"));
+                return;
+            }
+        }
+        getSupportActionBar().setTitle("Add Product");
     }
 
     @Override

@@ -14,6 +14,8 @@ public class ProductViewModel extends AndroidViewModel {
     private final DatabaseClient databaseClient;
     private final LiveData<List<Product>> allProducts;
 
+    private static Product lastDeleted;
+
     public ProductViewModel(@NonNull Application application) {
         super(application);
 
@@ -35,6 +37,24 @@ public class ProductViewModel extends AndroidViewModel {
     }
 
     public void delete(Product product) {
+        lastDeleted = product;
         databaseClient.delete(product);
+    }
+
+    public boolean recentlyDeleted() {
+        return lastDeleted != null;
+    }
+
+    public void discardDeleted() {
+        lastDeleted = null;
+    }
+
+    public boolean undoDelete() {
+        if (lastDeleted != null) {
+            insert(lastDeleted);
+            lastDeleted = null;
+            return true;
+        }
+        return false;
     }
 }

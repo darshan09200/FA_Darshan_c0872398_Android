@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.darshan09200.products.databinding.FragmentHomeBinding;
 import com.darshan09200.products.model.Product;
 import com.darshan09200.products.model.ProductViewModel;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,6 +86,23 @@ public class HomeFragment extends Fragment implements ProductsAdapter.OnItemClic
                 binding.productList.getAdapter().notifyDataSetChanged();
             }
         });
+
+        if (viewModel.recentlyDeleted()) {
+            Snackbar.make(binding.getRoot(), "Product deleted", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", v -> {
+                        if (viewModel.undoDelete()) {
+                            Snackbar.make(binding.getRoot(), "Product restored", Snackbar.LENGTH_LONG).show();
+                        }
+                    })
+                    .addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+                            viewModel.discardDeleted();
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override

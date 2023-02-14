@@ -24,7 +24,7 @@ public class DatabaseClient {
     private DatabaseClient(Context context) {
         this.context = context;
 
-        appDatabase = Room.databaseBuilder(this.context, AppDatabase.class, "Maps").build();
+        appDatabase = Room.databaseBuilder(this.context, AppDatabase.class, "Products").build();
 
         productDao = appDatabase.productDao();
         allProducts = productDao.getAllProducts();

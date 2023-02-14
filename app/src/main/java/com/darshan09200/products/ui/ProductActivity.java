@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class ProductActivity extends AppCompatActivity {
 
     ActivityProductBinding binding;
+    ProductViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +34,20 @@ public class ProductActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ProductViewModel.class);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        updateUI();
+    }
+
+    private void updateUI() {
         Intent intent = getIntent();
         long productId = intent.getLongExtra("productId", 0);
-        System.out.println(productId);
-        ProductViewModel viewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication()).create(ProductViewModel.class);
 
         Product product = viewModel.getProduct(productId);
 
@@ -51,6 +63,31 @@ public class ProductActivity extends AppCompatActivity {
             } else {
                 binding.productMapImage.setVisibility(View.GONE);
             }
+            binding.productEdit.setOnClickListener(v -> {
+                Intent productIntent = new Intent(ProductActivity.this, AddProductActivity.class);
+                productIntent.putExtra("productId", product.getId());
+                startActivity(productIntent);
+            });
+
+            binding.productDelete.setOnClickListener(v -> {
+                new AlertDialog.Builder(this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to delete?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            viewModel.delete(product);
+                            finish();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+            });
+
+            getSupportActionBar().setTitle(product.getName());
+        } else {
+            getSupportActionBar().setTitle("Product");
+            binding.productEdit.setVisibility(View.GONE);
+            binding.productDelete.setVisibility(View.GONE);
         }
     }
 
