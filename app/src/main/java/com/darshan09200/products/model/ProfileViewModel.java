@@ -1,4 +1,4 @@
-package com.darshan09200.products.ui.profile;
+package com.darshan09200.products.model;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

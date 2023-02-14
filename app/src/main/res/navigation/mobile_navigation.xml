@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.darshan09200.products.ui.home.HomeFragment"
+        android:name="com.darshan09200.products.ui.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.darshan09200.products.ui.profile.ProfileFragment"
+        android:name="com.darshan09200.products.ui.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>
